@@ -10,6 +10,8 @@ import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.emerjoin.arqiva.core.ArqivaException;
 import org.emerjoin.arqiva.core.components.TemplateEngine;
 import org.emerjoin.arqiva.core.context.HTMLRenderingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -23,6 +25,7 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
     private VelocityEngine velocityEngine = null;
     private VelocityConfigurator velocityConfigurator = null;
+    private static Logger log = LoggerFactory.getLogger(VelocityTemplateEngine.class);
 
     public VelocityTemplateEngine(){
 
@@ -49,6 +52,8 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
             StringWriter writer = new StringWriter();
             template.merge(velocityContext,writer,velocityConfigurator.getMacroLibraries());
+            //log.info("Velocity compiled "+htmlRenderingContext.getHtml().length()+" chars to "+writer.toString().length()+" chars");
+            htmlRenderingContext.updateHtml(writer.toString());
 
         }catch (ParseException ex){
 
