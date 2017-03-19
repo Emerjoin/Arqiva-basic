@@ -3,6 +3,7 @@ package org.emerjoin.arqiva.basic;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.RuntimeSingleton;
 import org.apache.velocity.runtime.parser.ParseException;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Calendar;
 import java.util.Properties;
 
 /**
@@ -40,11 +42,17 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
             VelocityContext velocityContext = new VelocityContext(htmlRenderingContext.getValues());
             VelocityEngine velocityEngine = new VelocityEngine();
+
             velocityEngine.init(velocityConfigurator.getInitProperties());
 
             RuntimeServices runtimeServices = RuntimeSingleton.getRuntimeServices();
+            runtimeServices.setProperty("velocimacro.library.autoreload",true);
+            runtimeServices.setProperty("file.resource.loader.cache",false);
+            runtimeServices.setProperty("velocimacro.permissions.allow.inline.to.replace.global",true);
+
             StringReader reader = new StringReader(htmlRenderingContext.getHtml());
-            SimpleNode node = runtimeServices.parse(reader, "Template name");
+            String tempateId = "templateId"+String.valueOf(Calendar.getInstance().getTimeInMillis());
+            SimpleNode node = runtimeServices.parse(reader, tempateId);
             Template template = new Template();
             template.setRuntimeServices(runtimeServices);
             template.setData(node);
@@ -52,7 +60,6 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
             StringWriter writer = new StringWriter();
             template.merge(velocityContext,writer,velocityConfigurator.getMacroLibraries());
-            //log.info("Velocity compiled "+htmlRenderingContext.getHtml().length()+" chars to "+writer.toString().length()+" chars");
             htmlRenderingContext.updateHtml(writer.toString());
 
         }catch (ParseException ex){

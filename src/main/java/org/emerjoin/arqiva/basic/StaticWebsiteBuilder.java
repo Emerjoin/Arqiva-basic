@@ -123,7 +123,7 @@ public class StaticWebsiteBuilder implements ProjectBuilder {
             String relativePath = "/topics/"+topicReference.getUrl()+".html";
             File destinationFile = new File(dest.getAbsolutePath()+relativePath);
             log.info(String.format("Building topic %s",relativePath));
-            FileUtils.putFileContents(destinationFile,arqiva.renderTopic(candidateFile));
+            FileUtils.putFileContents(destinationFile,arqiva.renderTopicPage(candidateFile));
 
         }
 
