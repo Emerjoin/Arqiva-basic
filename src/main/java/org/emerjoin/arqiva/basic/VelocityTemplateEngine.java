@@ -10,9 +10,6 @@ import org.apache.velocity.runtime.parser.node.SimpleNode;
 import org.emerjoin.arqiva.core.ArqivaException;
 import org.emerjoin.arqiva.core.components.TemplateEngine;
 import org.emerjoin.arqiva.core.context.HTMLRenderingContext;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,8 +26,6 @@ public class VelocityTemplateEngine implements TemplateEngine {
     private VelocityConfigurator velocityConfigurator = null;
     private static Logger log = LoggerFactory.getLogger(VelocityTemplateEngine.class);
 
-    //TODO: Document this configuration
-    public static final String VELOCITY_DISABLE_AUTO_ESCAPE_PRE_AND_SCRIPT = "DISABLE_AUTO_ESCAPING_PRE_AND_SCRIPT";
 
     public VelocityTemplateEngine(){
 
@@ -39,43 +34,6 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
     }
 
-
-    private void escapeElement(Element element){
-
-        String escaped = String.format("#[[%s]]#",element.html());
-        element.html(escaped);
-
-    }
-
-    private void escapeDocument(Document document){
-
-        document.select("script").forEach(this::escapeElement);
-        document.select("code").forEach(this::escapeElement);
-
-    }
-
-    private String escapeScriptAndPreElements(HTMLRenderingContext context){
-
-        Document document = null;
-        String html = context.getHtml();
-
-        //Escaping disabled
-        if(context.hasValue(VELOCITY_DISABLE_AUTO_ESCAPE_PRE_AND_SCRIPT))
-            if(context.getValue(VELOCITY_DISABLE_AUTO_ESCAPE_PRE_AND_SCRIPT).toString().toLowerCase().equals("true"))
-                return html;
-
-        boolean containsBody = html.contains("body");
-        if(containsBody){
-            document = Jsoup.parse(html);
-            escapeDocument(document);
-            return document.outerHtml();
-        }
-
-        document =Jsoup.parseBodyFragment(html);
-        escapeDocument(document);
-        return document.body().outerHtml();
-
-    }
 
     public void run(HTMLRenderingContext htmlRenderingContext) {
 
@@ -91,7 +49,7 @@ public class VelocityTemplateEngine implements TemplateEngine {
             runtimeServices.setProperty("file.resource.loader.cache",false);
             runtimeServices.setProperty("velocimacro.permissions.allow.inline.to.replace.global",true);
 
-            StringReader reader = new StringReader(escapeScriptAndPreElements(htmlRenderingContext));
+            StringReader reader = new StringReader(htmlRenderingContext.getHtml());
             String tempateId = "templateId"+String.valueOf(Calendar.getInstance().getTimeInMillis());
             SimpleNode node = runtimeServices.parse(reader, tempateId);
             Template template = new Template();
@@ -109,6 +67,13 @@ public class VelocityTemplateEngine implements TemplateEngine {
 
         }
 
+
+    }
+
+    @Override
+    public String escape(String s) {
+
+        return String.format("#[[%s]]#",s);
 
     }
 

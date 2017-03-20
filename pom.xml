@@ -46,18 +46,16 @@
             <version>1.7</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.9.1</version>
-        </dependency>
-
-
-
-
-
     </dependencies>
+
+    <!--Emerjoin's maven repository-->
+    <repositories>
+        <repository>
+            <id>Emerjoin</id>
+            <name>maven-repo</name>
+            <url>https://github.com/Emerjoin/maven-repo/raw/master</url>
+        </repository>
+    </repositories>
 
     
 </project>
