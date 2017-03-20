@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.emerjoin.arqiva</groupId>
-    <artifactId>basic-profile</artifactId>
+    <artifactId>arqiva-basic</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <build>
@@ -35,7 +35,7 @@
 
         <dependency>
             <groupId>org.emerjoin</groupId>
-            <artifactId>Arqiva-core</artifactId>
+            <artifactId>arqiva-core</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
 
