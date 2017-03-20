@@ -21,7 +21,7 @@ public class StaticWebsiteBuilder implements ProjectBuilder {
         log.info("Building static website docs...");
         String targetDirectory =  arqivaInstance.getProject().getContext().getTargetDirectory();
 
-        String staticWebsiteDirectory = targetDirectory+"/docs";
+        String staticWebsiteDirectory = targetDirectory+File.separator+"docs";
         log.info("Website output path : "+staticWebsiteDirectory);
         File staticWebsiteDirectoryFile = new File(staticWebsiteDirectory);
 
@@ -90,7 +90,7 @@ public class StaticWebsiteBuilder implements ProjectBuilder {
 
     private void createIndexPage(Arqiva project, File websiteDirectory){
 
-        File indexPage = new File(websiteDirectory+"/index.html");
+        File indexPage = new File(websiteDirectory+File.separator+"index.html");
         FileUtils.putFileContents(indexPage,project.renderIndexPage());
 
     }
@@ -120,7 +120,7 @@ public class StaticWebsiteBuilder implements ProjectBuilder {
                 continue;
 
             TopicReference topicReference = TopicReference.get(candidateFile,arqiva.getProject());
-            String relativePath = "/topics/"+topicReference.getUrl()+".html";
+            String relativePath = File.separator + "topics"+File.separator+topicReference.getUrl()+".html";
             File destinationFile = new File(dest.getAbsolutePath()+relativePath);
             log.info(String.format("Building topic %s",relativePath));
             FileUtils.putFileContents(destinationFile,arqiva.renderTopicPage(candidateFile));
