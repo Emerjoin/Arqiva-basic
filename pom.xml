@@ -6,7 +6,7 @@
 
     <groupId>org.emerjoin.arqiva</groupId>
     <artifactId>arqiva-basic</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <build>
 
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.emerjoin</groupId>
             <artifactId>arqiva-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.velocity/velocity -->
