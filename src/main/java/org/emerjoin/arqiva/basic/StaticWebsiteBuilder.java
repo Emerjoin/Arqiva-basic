@@ -91,7 +91,22 @@ public class StaticWebsiteBuilder implements ProjectBuilder {
     private void createIndexPage(Arqiva project, File websiteDirectory){
 
         File indexPage = new File(websiteDirectory+File.separator+"index.html");
-        FileUtils.putFileContents(indexPage,project.renderIndexPage());
+
+        String startPoint = project.getStartPoint();
+        if(startPoint.equals(Arqiva.START_POINT_INDEX)){
+
+            FileUtils.putFileContents(indexPage,project.renderIndexPage());
+
+        }else if(startPoint.equals(Arqiva.START_POINT_FIRST_TOPIC)){
+
+            String firstTopic = project.getProject().getTopicsTree().firstTopic().getRef().getUrl();
+            FileUtils.putFileContents(indexPage,project.renderTopicPage(firstTopic,true));
+
+        }else{
+
+            FileUtils.putFileContents(indexPage,project.renderTopicPage(startPoint,true));
+
+        }
 
     }
 
