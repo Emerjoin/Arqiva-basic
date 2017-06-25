@@ -121,6 +121,7 @@ public class StaticWebsiteBuilder implements ProjectBuilder {
     private void buildTopicPagesTo(Arqiva arqiva, File basePath, File sourceDirectory, File dest) {
 
         File[] files = sourceDirectory.listFiles();
+        String topicsDirctory = arqiva.getProject().getContext().getTopicsDirectory();
         for (File candidateFile : files) {
 
             if (!candidateFile.exists())
@@ -135,7 +136,7 @@ public class StaticWebsiteBuilder implements ProjectBuilder {
                 continue;
 
             TopicReference topicReference = TopicReference.get(candidateFile,arqiva.getProject());
-            String relativePath = File.separator + "topics"+File.separator+topicReference.getUrl()+".html";
+            String relativePath = File.separator +topicsDirctory+File.separator+topicReference.getUrl()+".html";
             File destinationFile = new File(dest.getAbsolutePath()+relativePath);
             log.info(String.format("Building topic %s",relativePath));
             FileUtils.putFileContents(destinationFile,arqiva.renderTopicPage(candidateFile));
